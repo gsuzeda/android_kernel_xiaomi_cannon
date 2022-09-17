@@ -114,3 +114,4 @@ obj-$(CONFIG_TOUCHSCREEN_FTS8719)	+= fts8719/
 TOUCH_LISTS := $(subst ",,$(CONFIG_TOUCHSCREEN_MTK_TOUCH))
 obj-y += $(foreach TOUCH,$(TOUCH_LISTS),$(TOUCH)/)
 
+obj-$(CONFIG_TOUCHSCREEN_COMMON)	+= tp_common.o
