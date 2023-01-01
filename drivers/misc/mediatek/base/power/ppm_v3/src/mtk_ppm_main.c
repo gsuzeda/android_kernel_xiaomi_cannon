@@ -40,11 +40,13 @@
 /*==============================================================*/
 /* Local variables                                              */
 /*==============================================================*/
+#if 0
 /* log filter parameters to avoid log too much issue */
 static ktime_t prev_log_time;
 static ktime_t prev_check_time;
 static unsigned int log_cnt;
 static unsigned int filter_cnt;
+#endif
 /* force update limit to HPS since it's not ready at previous round */
 static bool force_update_to_hps;
 static bool is_in_game;
@@ -581,6 +583,7 @@ void ppm_game_mode_change_cb(int is_game_mode)
 static void ppm_main_log_print(unsigned int policy_mask,
 	unsigned int min_power_budget, unsigned int root_cluster, char *msg)
 {
+#if 0
 	bool filter_log;
 	ktime_t cur_time = ktime_get();
 	unsigned long long delta1, delta2;
@@ -606,15 +609,7 @@ static void ppm_main_log_print(unsigned int policy_mask,
 		filter_log = true;
 		filter_cnt++;
 	}
-
-	if (!filter_log)
-		ppm_info("(0x%x)(%d)(%d)%s\n", policy_mask,
-			min_power_budget, root_cluster, msg);
-	else
-		ppm_ver("(0x%x)(%d)(%d)%s\n", policy_mask,
-			min_power_budget, root_cluster, msg);
-
-	prev_log_time = cur_time;
+#endif
 }
 
 int mt_ppm_main(void)
@@ -856,8 +851,6 @@ static int ppm_main_suspend(struct device *dev)
 {
 	FUNC_ENTER(FUNC_LV_MODULE);
 
-	ppm_info("%s: suspend callback in\n", __func__);
-
 	ppm_lock(&ppm_main_info.lock);
 	ppm_main_info.is_in_suspend = true;
 	ppm_unlock(&ppm_main_info.lock);
@@ -870,8 +863,6 @@ static int ppm_main_suspend(struct device *dev)
 static int ppm_main_resume(struct device *dev)
 {
 	FUNC_ENTER(FUNC_LV_MODULE);
-
-	ppm_info("%s: resume callback in\n", __func__);
 
 	ppm_lock(&ppm_main_info.lock);
 	ppm_main_info.is_in_suspend = false;
@@ -898,7 +889,6 @@ static int ppm_main_data_init(void)
 #else
 	ppm_main_info.cluster_num = NR_PPM_CLUSTERS;
 #endif
-	ppm_info("cluster_num = %d\n", ppm_main_info.cluster_num);
 
 	/* init exclusive core */
 	cpumask_clear(ppm_main_info.exclusive_core);
@@ -935,11 +925,6 @@ static int ppm_main_data_init(void)
 		else
 			ppm_main_info.cluster_info[i].cpu_id = 0;
 #endif
-		ppm_info("ppm cluster %d -> core_num = %d, cpu_id = %d\n",
-				ppm_main_info.cluster_info[i].cluster_id,
-				ppm_main_info.cluster_info[i].core_num,
-				ppm_main_info.cluster_info[i].cpu_id
-				);
 	}
 
 	/* init client request */
@@ -985,8 +970,6 @@ static int ppm_main_data_init(void)
 	aee_rr_rec_ppm_waiting_for_pbm(0);
 #endif
 
-	ppm_info("@%s: done!\n", __func__);
-
 	FUNC_EXIT(FUNC_LV_MAIN);
 
 	return ret;
@@ -1028,8 +1011,6 @@ static void ppm_main_data_deinit(void)
 static int ppm_main_pdrv_probe(struct platform_device *pdev)
 {
 	FUNC_ENTER(FUNC_LV_MODULE);
-
-	ppm_info("@%s: ppm probe done!\n", __func__);
 
 	FUNC_EXIT(FUNC_LV_MODULE);
 
@@ -1142,21 +1123,6 @@ static int __init ppm_main_init(void)
 
 	of_node_put(map);
 
-	ppm_info("DoE: %d\n", ppm_main_info.is_doe_enabled);
-	i = 0;
-
-	do {
-		ppm_info("cl: %d max: %d min: %d\n",
-			i,
-			ppm_main_info.cluster_info[i].doe_max,
-			ppm_main_info.cluster_info[i].doe_min);
-		i++;
-	} while (i < NR_PPM_CLUSTERS);
-
-	/* DoE */
-
-	ppm_info("ppm driver init done!\n");
-
 	return ret;
 
 profile_init_fail:
@@ -1179,8 +1145,6 @@ NO_DOE:
 	of_node_put(d);
 
 	ppm_main_info.is_doe_enabled = 0;
-	ppm_info("ppm driver init done (no DoE)!\n");
-
 	return ret;
 }
 

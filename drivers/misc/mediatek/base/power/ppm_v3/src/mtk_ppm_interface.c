@@ -150,7 +150,6 @@ static ssize_t ppm_enabled_proc_write(struct file *file,
 				ppm_main_info.cluster_num *
 				sizeof(*c_req->cpu_limit));
 
-			ppm_info("PPM disabled, send no limit to clinet!\n");
 		}
 	} else
 		ppm_err("echo [0/1] > /proc/ppm/enabled\n");
@@ -190,8 +189,6 @@ static ssize_t ppm_exclusive_core_proc_write(struct file *file,
 			mask >>= 1;
 		}
 		ppm_unlock(&ppm_main_info.lock);
-		ppm_info("update exclusive core = %*pbl\n",
-			cpumask_pr_args(ppm_main_info.exclusive_core));
 		mt_ppm_main();
 	} else
 		ppm_err("echo <bitmask> > /proc/ppm/exclusive_core\n");

@@ -181,9 +181,6 @@ void mt_ppm_sysboost_freq(enum ppm_sysboost_user user, unsigned int freq)
 		return;
 	}
 
-	ppm_info("sys boost by %s: req_freq = %d\n",
-		sysboost_data[user].user_name, freq);
-
 	/* update user freq setting */
 	list_for_each_entry_reverse(data, &sysboost_user_list, link) {
 		if (data->user == user) {
@@ -246,9 +243,6 @@ void mt_ppm_sysboost_set_freq_limit(enum ppm_sysboost_user user,
 			user, cluster, min_freq, max_freq);
 		return;
 	}
-
-	ppm_info("sys boost by %s: cluster %d min/max freq = %d/%d\n",
-		sysboost_data[user].user_name, cluster, min_freq, max_freq);
 
 	if (min_freq > max_freq && max_freq != -1)
 		min_freq = max_freq;

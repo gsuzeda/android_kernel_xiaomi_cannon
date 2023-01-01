@@ -180,12 +180,9 @@ static ssize_t ppm_profile_on_proc_write(struct file *file,
 		/* on: record current time and clear all data */
 		/* off: update time_in_state */
 		if (!enable) {
-			ppm_info("profiling stop!\n");
 			p->is_profiling = false;
 		} else {
 			int i;
-
-			ppm_info("profiling start!\n");
 
 			/* clear data */
 			for_each_ppm_clients(i) {
@@ -247,8 +244,6 @@ int ppm_profile_init(void)
 	}
 
 	mutex_init(&ppm_profile_data.lock);
-
-	ppm_info("%s done\n", __func__);
 
 out:
 	return ret;

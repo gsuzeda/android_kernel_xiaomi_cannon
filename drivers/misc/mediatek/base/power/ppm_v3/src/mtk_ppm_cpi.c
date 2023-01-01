@@ -838,8 +838,6 @@ static int __init ppm_cpi_init(void)
 		is_cpi_enabled = true;
 #endif
 
-	ppm_info("@%s: CPI done! enable = %d\n", __func__, is_cpi_enabled);
-
 	return ret;
 }
 

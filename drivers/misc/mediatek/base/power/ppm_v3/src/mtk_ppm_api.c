@@ -20,7 +20,7 @@ void mt_ppm_set_dvfs_table(unsigned int cpu,
 	unsigned int num, enum dvfs_table_type type)
 {
 	struct ppm_data *p = &ppm_main_info;
-	int i, j;
+	int i;
 
 	FUNC_ENTER(FUNC_LV_API);
 
@@ -31,22 +31,6 @@ void mt_ppm_set_dvfs_table(unsigned int cpu,
 		/* return if table is existed */
 		if (p->cluster_info[i].dvfs_tbl)
 			return;
-
-		ppm_lock(&(p->lock));
-
-		p->dvfs_tbl_type = type;
-		p->cluster_info[i].dvfs_tbl = tbl;
-		p->cluster_info[i].dvfs_opp_num = num;
-		/* dump dvfs table */
-		ppm_info("DVFS table type = %d\n", type);
-		ppm_info("DVFS table of cluster %d:\n",
-			p->cluster_info[i].cluster_id);
-		for (j = 0; j < num; j++) {
-			ppm_info("%d: %d KHz\n",
-				j, p->cluster_info[i].dvfs_tbl[j].frequency);
-		}
-
-		ppm_unlock(&(p->lock));
 
 		FUNC_EXIT(FUNC_LV_API);
 		return;

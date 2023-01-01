@@ -317,8 +317,6 @@ static int __init ppm_ut_policy_init(void)
 		goto out;
 	}
 
-	ppm_info("@%s: register %s done!\n", __func__, ut_policy.name);
-
 out:
 	FUNC_EXIT(FUNC_LV_POLICY);
 

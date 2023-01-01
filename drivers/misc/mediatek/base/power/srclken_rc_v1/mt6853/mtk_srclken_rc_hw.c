@@ -171,7 +171,7 @@ static int __srclken_switch_subsys_ctrl(enum sys_id id,
 			== (mode | req))
 		return 0;
 
-	pr_info("read back value err.(0x%x)",
+	pr_debug("read back value err.(0x%x)",
 			srclken_read(RC_M00_SRCLKEN_CFG + 4 * id));
 	return -1;
 
@@ -207,9 +207,9 @@ static ssize_t __subys_ctl_store(const char *buf, enum sys_id id)
 		__srclken_gpio_pull(true);
 		#endif
 	} else {
-		pr_info("bad argument!! please follow correct format\n");
-		pr_info("echo $mode > proc/srclken_rc/$subsys\n");
-		pr_info("mode = {HW, SW_OFF, SW_FPM, SW_BBLPM}\n");
+		pr_debug("bad argument!! please follow correct format\n");
+		pr_debug("echo $mode > proc/srclken_rc/$subsys\n");
+		pr_debug("mode = {HW, SW_OFF, SW_FPM, SW_BBLPM}\n");
 
 		return -EPERM;
 	}
@@ -325,7 +325,7 @@ void srclken_dump_sta_log(void)
 
 	clk_buf_get_aux_out();
 	clk_buf_dump_clkbuf_log();
-	pr_notice("%s:\n", __func__);
+	pr_debug("%s:\n", __func__);
 	for (id = 0; id < XO_NUMBER; id++) {
 		sta = clk_buf_get_xo_en_sta(id);
 		if (sta) {
@@ -373,7 +373,7 @@ void srclken_dump_cfg_log(void)
 
 	__srclken_dump_cfg(buf);
 
-	pr_notice("%s: %s\n", __func__, buf);
+	pr_debug("%s: %s\n", __func__, buf);
 }
 
 static int __srclken_dump_last_sta(char *buf, u8 idx)
@@ -408,12 +408,12 @@ void srclken_dump_last_sta_log(void)
 	char buf[1024];
 	u8 i;
 
-	pr_notice("%s:\n", __func__);
+	pr_debug("%s:\n", __func__);
 
 	for (i = 0; i < TRACE_NUM; i++) {
 		__srclken_dump_last_sta(buf, i);
 
-		pr_notice("%s", buf);
+		pr_debug("%s", buf);
 	}
 }
 
@@ -829,7 +829,7 @@ static ssize_t debug_ctl_store(struct kobject *kobj,
 
 	return count;
 ERROR_CMD:
-	pr_info("bad argument!! please follow correct format\n");
+	pr_debug("bad argument!! please follow correct format\n");
 	return -EPERM;
 }
 
@@ -867,7 +867,7 @@ static ssize_t scp_sw_ctl_store(struct kobject *kobj,
 
 	return count;
 ERROR_CMD:
-	pr_info("bad argument!! please follow correct format\n");
+	pr_debug("bad argument!! please follow correct format\n");
 	return -EPERM;
 }
 
@@ -1036,7 +1036,7 @@ int srclken_dts_map(void)
 void srclken_stage_init(void)
 {
 #if SRCLKEN_RC_BRINGUP
-	pr_info("%s: skipped for bring up\n", __func__);
+	pr_debug("%s: skipped for bring up\n", __func__);
 	return;
 #else
 #if 0

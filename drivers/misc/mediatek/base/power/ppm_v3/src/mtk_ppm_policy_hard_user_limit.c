@@ -473,9 +473,6 @@ static int __init ppm_hard_userlimit_policy_init(void)
 		goto out;
 	}
 
-	ppm_info("@%s: register %s done!\n",
-		__func__, hard_userlimit_policy.name);
-
 out:
 	FUNC_EXIT(FUNC_LV_POLICY);
 

@@ -54,7 +54,6 @@ void __attribute__((weak)) clk_buf_dump_clkbuf_log(void)
 
 int __attribute__((weak)) clk_buf_fs_init(void)
 {
-	pr_info("%s: dummy func\n", __func__);
 	return 0;
 }
 
@@ -153,8 +152,6 @@ int clk_buf_init(void)
 		pr_err("%s: failed due to DTS failed\n", __func__);
 		return -1;
 	}
-
-	clk_buf_dump_dts_log();
 
 	if (clk_buf_fs_init())
 		return -1;
