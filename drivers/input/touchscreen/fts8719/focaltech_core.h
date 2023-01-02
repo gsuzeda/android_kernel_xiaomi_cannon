@@ -186,6 +186,7 @@ struct fts_ts_data {
 	bool glove_mode;
 	bool cover_mode;
 	bool charger_mode;
+    bool gesture_mode;      /* gesture enable or disable, default: disable */
 	/* multi-touch */
 	struct ts_event *events;
 	u8 *bus_tx_buf;
@@ -218,10 +219,6 @@ struct fts_ts_data {
 	void *proc_test_data;
 #endif
 	int db_wakeup;
-#ifdef CONFIG_TOUCHSCREEN_XIAOMI_TOUCHFEATURE
-	u8 palm_sensor_switch;
-	bool palm_sensor_changed;
-#endif
 	u8 lockdown_info[FTS_LOCKDOWN_SIZE];
 	struct attribute_group *attrs;
 	struct notifier_block power_supply_notif;
